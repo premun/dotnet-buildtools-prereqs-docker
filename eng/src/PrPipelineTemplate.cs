@@ -12,7 +12,7 @@ class PrPipelineTemplate : PipelineTemplate
         {
             Paths = new()
             {
-                Include = { $"src/{data.RepoPath ?? data.Name.ToLower()}/*" }
+                Include = { $"src/{GetRepoPath(data)}/*" }
             }
         },
 
@@ -28,16 +28,5 @@ class PrPipelineTemplate : PipelineTemplate
                 }
             }
         },
-
-        Variables =
-        {
-            VariableTemplate("variables/common.yml"),
-            Variable("imageBuilder.pathArgs", $"--path 'src/{data.RepoPath ?? data.Name.ToLower()}/*'"),
-        },
-
-        Stages =
-        {
-            StageTemplate("../common/templates/stages/dotnet/build-test-publish-repo.yml", GetPublishParameters(data))
-        }
     };
 }

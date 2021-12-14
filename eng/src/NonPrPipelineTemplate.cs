@@ -26,17 +26,6 @@ class NonPrPipelineTemplate : PipelineTemplate
                     Name = "internal/dotnet-versions",
                 }
             }
-        },
-
-        Variables =
-        {
-            VariableTemplate("variables/common.yml"),
-            Variable("imageBuilder.pathArgs", $"--path '{GetRepoPath(data)}'"),
-        },
-
-        Stages =
-        {
-            StageTemplate("../common/templates/stages/dotnet/build-test-publish-repo.yml", GetPublishParameters(data))
         }
     };
 }

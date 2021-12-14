@@ -9,7 +9,19 @@ abstract class PipelineTemplate : PipelineCollection
     public override IEnumerable<PipelineDefinitionData<Pipeline>> Pipelines => PipelineList.Pipelines.Select(
         data => new PipelineDefinitionData<Pipeline>(
             $"eng/pipelines/dotnet-buildtools-prereqs-{data.Name.ToLower()}-pr.yml",
-            CreatePipeline(data)));
+            CreatePipeline(data) with
+            {
+                Variables = new()
+                {
+                    VariableTemplate("variables/common.yml"),
+                    Variable("imageBuilder.pathArgs", $"--path 'src/{GetRepoPath(data)}/*'"),
+                },
+
+                Stages = new()
+                {
+                    StageTemplate("../common/templates/stages/dotnet/build-test-publish-repo.yml", GetPublishParameters(data))
+                }
+            }));
 
     protected abstract Pipeline CreatePipeline(PipelineMetadata data);
 
