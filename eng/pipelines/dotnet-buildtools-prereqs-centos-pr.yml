@@ -1,4 +1,12 @@
+###
+### DO NOT MODIFY THIS FILE!
+###
+### This YAML was auto-generated from PrPipelineTemplate
+### To make changes, change the C# definition and rebuild its project
+###
+
 trigger: none
+
 pr:
   branches:
     include:
@@ -11,11 +19,12 @@ resources:
   repositories:
   - repository: PublicVersionsRepo
     type: github
-    endpoint: dotnet
     name: dotnet/versions
+    endpoint: dotnet
 
 variables:
 - template: variables/common.yml
+
 - name: imageBuilder.pathArgs
   value: --path 'src/centos/*'
 

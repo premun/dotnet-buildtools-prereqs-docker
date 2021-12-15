@@ -1,3 +1,10 @@
+###
+### DO NOT MODIFY THIS FILE!
+###
+### This YAML was auto-generated from NonPrPipelineTemplate
+### To make changes, change the C# definition and rebuild its project
+###
+
 trigger:
   branches:
     include:
@@ -16,6 +23,7 @@ resources:
 
 variables:
 - template: variables/common.yml
+
 - name: imageBuilder.pathArgs
   value: --path 'src/debian/*'
 

@@ -1,3 +1,10 @@
+###
+### DO NOT MODIFY THIS FILE!
+###
+### This YAML was auto-generated from NonPrPipelineTemplate
+### To make changes, change the C# definition and rebuild its project
+###
+
 trigger:
   branches:
     include:
@@ -5,6 +12,7 @@ trigger:
   paths:
     include:
     - src/nanoserver/*
+
 pr: none
 
 resources:
@@ -15,6 +23,7 @@ resources:
 
 variables:
 - template: variables/common.yml
+
 - name: imageBuilder.pathArgs
   value: --path 'src/nanoserver/*'
 
