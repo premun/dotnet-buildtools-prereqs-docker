@@ -12,9 +12,11 @@ class PrPipelineTemplate : PipelineTemplate
         {
             Paths = new()
             {
-                Include = { $"src/{GetRepoPath(data)}/*" }
+                Include = { GetDockerPath(data) }
             }
         },
+
+        Trigger = Trigger.None,
 
         Resources = new Resources()
         {

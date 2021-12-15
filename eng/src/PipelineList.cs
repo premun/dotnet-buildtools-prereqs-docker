@@ -8,23 +8,19 @@ static class PipelineList
     {
         new("Alpine"),
 
-        new("CentOS",
-            LinuxJobTimeout: 210),
+        new("CentOS", LinuxJobTimeout: 210),
 
         new("Debian"),
 
         new("Fedora"),
 
-        new("Mariner",
-            RepoPath: "cbl-mariner"),
+        new("Mariner", RepoPath: "cbl-mariner"),
 
         new("NanoServer"),
 
         new("OpenSUSE"),
 
-        new("Ubuntu",
-            LinuxJobTimeout: 150,
-            NeedsCustomBuildInit: true),
+        new("Ubuntu", LinuxJobTimeout: 150, NeedsCustomBuildInit: true),
 
         new("WindowsServerCore"),
     };

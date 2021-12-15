@@ -12,9 +12,11 @@ class NonPrPipelineTemplate : PipelineTemplate
         {
             Paths = new()
             {
-                Include = { $"src/{GetRepoPath(data)}/*" }
+                Include = { GetDockerPath(data) }
             }
         },
+
+        Pr = PrTrigger.None,
 
         Resources = new Resources()
         {

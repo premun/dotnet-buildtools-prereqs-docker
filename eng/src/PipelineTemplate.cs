@@ -6,29 +6,32 @@ namespace Pipelines;
 
 abstract class PipelineTemplate : PipelineCollection
 {
-    public override IEnumerable<PipelineDefinitionData<Pipeline>> Pipelines => PipelineList.Pipelines.Select(
-        data => new PipelineDefinitionData<Pipeline>(
-            $"eng/pipelines/dotnet-buildtools-prereqs-{data.Name.ToLower()}-pr.yml",
-            CreatePipeline(data) with
-            {
-                Variables = new()
-                {
-                    VariableTemplate("variables/common.yml"),
-                    Variable("imageBuilder.pathArgs", $"--path 'src/{GetRepoPath(data)}/*'"),
-                },
+    protected virtual IEnumerable<PipelineMetadata> PipelineDefinitions => PipelineList.Pipelines;
 
-                Stages = new()
-                {
-                    StageTemplate("../common/templates/stages/dotnet/build-test-publish-repo.yml", GetPublishParameters(data))
-                }
-            }));
+    public override IEnumerable<PipelineDefinitionData<Pipeline>> Pipelines => PipelineDefinitions.Select(
+        data => new PipelineDefinitionData<Pipeline>(GetYamlPath(data), AddCommonParts(CreatePipeline(data), data)));
 
     protected abstract Pipeline CreatePipeline(PipelineMetadata data);
 
     protected abstract string TargetFileSuffix { get; }
 
-    protected static string GetRepoPath(PipelineMetadata data) => $"src/{data.RepoPath ?? data.Name.ToLower()}/*";
+    protected string GetYamlPath(PipelineMetadata data) => $"eng/pipelines/dotnet-buildtools-prereqs-{data.Name.ToLower()}{TargetFileSuffix}.yml";
 
+    protected virtual string GetDockerPath(PipelineMetadata data) => $"src/{data.RepoPath ?? data.Name.ToLower()}/*";
+
+    protected Pipeline AddCommonParts(Pipeline pipeline, PipelineMetadata data) => pipeline with
+    {
+        Variables = new()
+        {
+            VariableTemplate("variables/common.yml"),
+            Variable("imageBuilder.pathArgs", $"--path '{GetDockerPath(data)}'"),
+        },
+
+        Stages = new()
+        {
+            StageTemplate("../common/templates/stages/dotnet/build-test-publish-repo.yml", GetPublishParameters(data))
+        }
+    };
     protected static TemplateParameters GetPublishParameters(PipelineMetadata data)
     {
         var parameters = new TemplateParameters()
